@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="Resotel.Views.UCEntretien"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Resotel.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="FontSize" Value="15"/>
+            </Style>
+
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="FontSize" Value="15"/>
+            </Style>
+
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="Height" Value="50"/>
+            </Style>
+
+            <Style TargetType="StackPanel" >
+                <Setter Property="Margin" Value="20" />
+            </Style>
+
+            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                <Setter Property="FontSize" Value="15"/>
+            </Style>
+
+            <Style x:Key="Bold" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="166*"/>
+            <ColumnDefinition Width="142*"/>
+            <ColumnDefinition Width="110*"/>
+            <ColumnDefinition Width="228*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Margin="20">
+            <TextBlock Text="Demander le nettoyage " Style="{StaticResource Bold}" />
+        </StackPanel>
+
+        <DataGrid Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding BedroomsViewModelAll.ListBedrooms}" AutoGenerateColumns="False" FontSize="15" IsReadOnly="True" >
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Setters>
+                        <Setter Property="Background" Value="{Binding RowColor}"></Setter>
+                    </Style.Setters>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Numéro de chambre :" Binding="{Binding Bedroom.Number}" Width="*" SortDirection="Ascending"/>
+                <DataGridTextColumn Header="Type de chambre :" Binding="{Binding Bedroom.TypeBedroom.Name}" Width="*" />
+                <DataGridTextColumn Header="Etat actuel :" Binding="{Binding Bedroom.State}" Width="*" />
+                <DataGridTextColumn Header="Date du dernier nettoyage :" Binding="{Binding DateLastClean}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="1" Grid.Column="3">
+            <TextBlock Text="Chambre" Style="{StaticResource Bold}"  />
+            <ComboBox Name="bedroomComboBox" ItemsSource="{Binding BedroomsViewModelToClean.ListBedrooms}" DisplayMemberPath="Name"  SelectedItem="{Binding BedroomsViewModelToClean.BedroomSelected}" IsSynchronizedWithCurrentItem="True" />
+        </StackPanel>
+            
+        <StackPanel Grid.Row="2" Grid.Column="3">
+            <TextBlock TextWrapping="Wrap" Text="Les chambres doivent être libérées avant 12h le jour du départ. Le nettoyage sera effectué entre 12h et 17h." />
+        </StackPanel>
+
+        <Button Content="Valider le nettoyage" Grid.Row="3" Grid.Column="3" Command="{Binding CommandChangeStatus}" Margin="8.6,0,10,9.6"/>
+    </Grid>
+</UserControl>
